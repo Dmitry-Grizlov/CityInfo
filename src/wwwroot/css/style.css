@@ -2419,3 +2419,32 @@ form input[type="reset"] {
   background: #009ad8;
   color: white;
 }
+
+
+/* search helper */
+
+#autocomplete {
+  background: #1e202b;
+  border-radius: 10px;
+  padding: 10px 0;
+  width: 50%;
+  margin-left: 30px;
+  position: absolute;
+  z-index: 1000;
+  max-height: 250px;
+  overflow-y: scroll;
+}
+
+.autocomplete-list-item {
+  list-style-type: none;
+  padding: 10px;
+}
+
+.autocomplete-list-item:hover {
+  background-color: #262936;
+}
+
+.autocomplete-list-item a {
+  color: #fff;
+  font-weight: 400;
+}
