@@ -1,4 +1,4 @@
-@model WeatherModel;
+@model CityIndexModel;
 
 <div class="hero" data-bg-image="/images/banner.png">
     <div class="container">
@@ -19,23 +19,23 @@
                     <div class="date">@DateTime.Now.ToString("dd MMM")</div>
                 </div>
                 <div class="forecast-content">
-                    <div class="location">@Model.City</div>
+                    <div class="location">@Model.Weather.City</div>
                     <div class="degree">
-                        <div class="num">@Model.CurrentWeather.Temperature<sup>o</sup>C</div>
+                        <div class="num">@Model.Weather.CurrentWeather.Temperature<sup>o</sup>C</div>
                         <div class="forecast-icon">
-                            <img src="~/images/icons/@(WeatherModel.WeatherIcon(Model.CurrentWeather.WeatherCode))"
+                            <img src="~/images/icons/@(WeatherModel.WeatherIcon(Model.Weather.CurrentWeather.WeatherCode))"
                                 alt="" width=90>
                         </div>
                     </div>
                     @* TODO Add humidity info *@
                     @* <span><img src="~/images/icon-umberella.png" alt="">10%</span> *@
-                    <span><img src="~/images/icon-wind.png" alt="">@(Model.CurrentWeather.WindSpeed)km/h</span>
-                    <span><img src="~/images/icon-compass.png" alt="">@Model.CurrentWeather.Direction</span>
+                    <span><img src="~/images/icon-wind.png" alt="">@(Model.Weather.CurrentWeather.WindSpeed)km/h</span>
+                    <span><img src="~/images/icon-compass.png" alt="">@Model.Weather.CurrentWeather.Direction</span>
                 </div>
             </div>
             @{
                 int i = 0;
-                foreach (var item in @Model.OneDayWeather)
+                foreach (var item in @Model.Weather.OneDayWeather)
                 {
                     if (i == 0)
                     {
@@ -64,33 +64,44 @@
     <div class="fullwidth-block" data-bg-color="#262936">
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="news">
-                        <div class="date">06.10</div>
-                        <h3><a href="#">Doloremque laudantium totam sequi </a></h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo saepe assumenda dolorem modi,
-                            expedita voluptatum ducimus necessitatibus. Asperiores quod reprehenderit necessitatibus
-                            harum, mollitia, odit et consequatur maxime nisi amet doloremque.</p>
+                @foreach (var item in @Model.News.Data)
+                {
+                    <div class="col-md-4">
+                        <div class="news">
+                            <div class="date">@item.PublicationDate</div>
+                            <h3><a href="#">@item.Title</a></h3>
+                            <p>@item.FormattedDescription</p>
+                        </div>
                     </div>
+                }
+
+                @* <div class="col-md-4">
+                <div class="news">
+                <div class="date">06.10</div>
+                <h3><a href="#">Doloremque laudantium totam sequi </a></h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo saepe assumenda dolorem modi,
+                expedita voluptatum ducimus necessitatibus. Asperiores quod reprehenderit necessitatibus
+                harum, mollitia, odit et consequatur maxime nisi amet doloremque.</p>
+                </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="news">
-                        <div class="date">06.10</div>
-                        <h3><a href="#">Doloremque laudantium totam sequi </a></h3>
-                        <p>Nobis architecto consequatur ab, ea, eum autem aperiam accusantium placeat vitae facere
-                            explicabo temporibus minus distinctio cum optio quis, dignissimos eius aspernatur fuga.
-                            Praesentium totam, corrupti beatae amet expedita veritatis.</p>
-                    </div>
+                <div class="news">
+                <div class="date">06.10</div>
+                <h3><a href="#">Doloremque laudantium totam sequi </a></h3>
+                <p>Nobis architecto consequatur ab, ea, eum autem aperiam accusantium placeat vitae facere
+                explicabo temporibus minus distinctio cum optio quis, dignissimos eius aspernatur fuga.
+                Praesentium totam, corrupti beatae amet expedita veritatis.</p>
+                </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="news">
-                        <div class="date">06.10</div>
-                        <h3><a href="#">Doloremque laudantium totam sequi </a></h3>
-                        <p>Enim impedit officiis placeat qui recusandae doloremque possimus, iusto blanditiis, quam
-                            optio delectus maiores. Possimus rerum, velit cum natus eos. Cumque pariatur beatae
-                            asperiores, esse libero quas ad dolorem. Voluptates.</p>
-                    </div>
+                <div class="news">
+                <div class="date">06.10</div>
+                <h3><a href="#">Doloremque laudantium totam sequi </a></h3>
+                <p>Enim impedit officiis placeat qui recusandae doloremque possimus, iusto blanditiis, quam
+                optio delectus maiores. Possimus rerum, velit cum natus eos. Cumque pariatur beatae
+                asperiores, esse libero quas ad dolorem. Voluptates.</p>
                 </div>
+                </div> *@
             </div>
         </div>
     </div>

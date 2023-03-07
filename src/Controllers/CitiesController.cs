@@ -34,9 +34,14 @@ namespace CityInfo.Controllers
                 geoUrl = $"https://api.open-meteo.com/v1/forecast?latitude={data[1]}&longitude={data[2]}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=PST&temperature_unit=celsius";
                 city = data[0];
             }
-            var result = JsonConvert.DeserializeObject<WeatherModel>(await request.Get(geoUrl));
 
-            result.City = city;
+            var today = DateTime.Today.ToString("yyyy-MM-dd");
+            var newsUrl = $"http://api.mediastack.com/v1/news?access_key={_config.NewsKey}&country=us&keywords={city}&date={today}&sort=published_desc&language=us&limit=3";
+            var news = JsonConvert.DeserializeObject<NewsModel>(await request.Get(newsUrl));
+            var weather = JsonConvert.DeserializeObject<WeatherModel>(await request.Get(geoUrl));
+            weather.City = city;
+
+            var result = new CityIndexModel { News = news, Weather = weather };
             return View(result);
         }
 
