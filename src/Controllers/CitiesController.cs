@@ -35,13 +35,15 @@ namespace CityInfo.Controllers
                 city = data[0];
             }
 
-            var today = DateTime.Today.ToString("yyyy-MM-dd");
-            var newsUrl = $"http://api.mediastack.com/v1/news?access_key={_config.NewsKey}&country=us&keywords={city}&date={today}&sort=published_desc&language=us&limit=3";
+            var newsUrl = $"http://api.mediastack.com/v1/news?access_key={_config.NewsKey}&country=us&keywords={city}&date={DateTime.Today.ToString("yyyy-MM-dd")}&sort=published_desc&language=us&limit=3";
             var news = JsonConvert.DeserializeObject<NewsModel>(await request.Get(newsUrl));
             var weather = JsonConvert.DeserializeObject<WeatherModel>(await request.Get(geoUrl));
-            weather.City = city;
 
-            var result = new CityIndexModel { News = news, Weather = weather };
+            var imageRequest = new AppRequest();
+            var imageUrl = $"https://api.unsplash.com/search/photos/?client_id={_config.ImageKey}&query={city},{city}-tourism,{city}-sightseeing,{city}-attractions&per_page=9&orientation=landscape";
+            var images = JsonConvert.DeserializeObject<ImageModel>(await request.Get(imageUrl));
+
+            var result = new CityIndexModel { City = city, News = news, Weather = weather, Images = images };
             return View(result);
         }
 

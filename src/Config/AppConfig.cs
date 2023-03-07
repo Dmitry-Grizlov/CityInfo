@@ -5,5 +5,7 @@ namespace CityInfo.Models
         public string IpGeoKey { get; set; }
 
         public string NewsKey { get; set; }
+
+        public string ImageKey { get; set; }
     }
 }
