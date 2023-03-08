@@ -1,60 +1,41 @@
-using Newtonsoft.Json;
-using CityInfo.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using CityInfo.Extensions;
+using CityInfo.Services;
 
 namespace CityInfo.Controllers
 {
     public class CitiesController : Controller
     {
-        private readonly AppConfig _config;
+        private readonly WeatherService _weather;
+        private readonly NewsService _news;
+        private readonly ImageService _images;
+        private readonly GeoService _geo;
 
-        public CitiesController(IOptions<AppConfig> config)
+        public CitiesController(WeatherService weather, NewsService news, ImageService images, GeoService geo)
         {
-            _config = config.Value;
+            _weather = weather;
+            _news = news;
+            _images = images;
+            _geo = geo;
         }
 
         public async Task<IActionResult> Index(string coordinates = null)
         {
-            var request = new AppRequest();
-            var geoUrl = string.Empty;
-            var city = string.Empty;
-            if (string.IsNullOrEmpty(coordinates))
-            {
-                var ip = "71.9.37.133";// HttpContext.Request.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-                var url = $"https://api.ipgeolocation.io/ipgeo?apiKey={_config.IpGeoKey}&ip={ip}";
-                var locationData = JsonConvert.DeserializeObject<GeoIpModel>(await request.Get(url));
-                geoUrl = $"https://api.open-meteo.com/v1/forecast?latitude={locationData.Latitude}&longitude={locationData.Longitude}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=PST&temperature_unit=celsius";
-                city = locationData.StateProv;
-            }
-            else
-            {
-                var data = coordinates.Split('|');
-                geoUrl = $"https://api.open-meteo.com/v1/forecast?latitude={data[1]}&longitude={data[2]}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=PST&temperature_unit=celsius";
-                city = data[0];
-            }
+            var weather = await _weather.GetWeather(coordinates, HttpContext.GetIpAddress());
+            var city = weather.City;
 
-            var newsUrl = $"http://api.mediastack.com/v1/news?access_key={_config.NewsKey}&country=us&keywords={city}&date={DateTime.Today.ToString("yyyy-MM-dd")}&sort=published_desc&language=us&limit=3";
-            var news = JsonConvert.DeserializeObject<NewsModel>(await request.Get(newsUrl));
-            var weather = JsonConvert.DeserializeObject<WeatherModel>(await request.Get(geoUrl));
-
-            var imageRequest = new AppRequest();
-            var imageUrl = $"https://api.unsplash.com/search/photos/?client_id={_config.ImageKey}&query={city},{city}-tourism,{city}-sightseeing,{city}-attractions&per_page=9&orientation=landscape";
-            var images = JsonConvert.DeserializeObject<ImageModel>(await request.Get(imageUrl));
-
+            ViewData["Title"] = city;
+            
+            var news = await _news.GetNews(city);
+            var images = await _images.GetImages(city);
             var result = new CityIndexModel { City = city, News = news, Weather = weather, Images = images };
+
             return View(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> CitiesList(string input)
         {
-            var url = $"https://geocoding-api.open-meteo.com/v1/search?name={input}";
-            var request = new AppRequest();
-
-            var response = await request.Get(url);
-            return Json(JsonConvert.DeserializeObject<GeoModel>(response));
+            return Json(await _geo.List(input));
         }
 
         public IActionResult News()
@@ -67,6 +48,8 @@ namespace CityInfo.Controllers
             return View();
         }
 
+        [HttpGet]
+        [Route("Contact")]
         public IActionResult Contact()
         {
             return View();

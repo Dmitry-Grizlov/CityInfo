@@ -1,8 +1,10 @@
 using CityInfo.Models;
+using CityInfo.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+builder.Services.RegisterServices();
 builder.Services.Configure<AppConfig>(builder.Configuration.GetSection("AppConfig"));
 
 var app = builder.Build();

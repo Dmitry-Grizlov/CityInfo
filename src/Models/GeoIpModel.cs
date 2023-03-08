@@ -10,5 +10,21 @@ namespace CityInfo.Models
         public decimal Latitude { get; set; }
 
         public decimal Longitude { get; set; }
+
+        public GeoIpModel() { }
+
+        public GeoIpModel(string stateProv, decimal lat, decimal lon)
+        {
+            StateProv = stateProv;
+            Latitude = lat;
+            Longitude = lon;
+        }
+
+        public GeoIpModel(string stateProv, string lat, string lon)
+        {
+            StateProv = stateProv;
+            Latitude = decimal.Parse(lat);
+            Longitude = decimal.Parse(lon);
+        }
     }
 }

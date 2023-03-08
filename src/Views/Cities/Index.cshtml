@@ -1,5 +1,4 @@
 @model CityIndexModel;
-
 <div class="hero" data-bg-image="/images/banner.png">
     <div class="container">
         <form asp-controller="Cities" asp-action="Index" method="get" class="find-location">
@@ -46,7 +45,7 @@
                     <div class="forecast">
                         <div class="forecast-header">
                             <div class="day">@item.Date.DayOfWeek</div>
-                        </div> <!-- .forecast-header -->
+                        </div>
                         <div class="forecast-content">
                             <div class="forecast-icon">
                                 <img src="~/images/icons/@(WeatherModel.WeatherIcon(item.WeatherState))" alt="" width=48>
@@ -69,7 +68,7 @@
                     <div class="col-md-4">
                         <div class="news">
                             <div class="date">@item.PublicationDate</div>
-                            <h3><a href="#">@item.Title</a></h3>
+                            <h3><a href="@item.Url" target="_blank">@item.Title</a></h3>
                             <p>@item.FormattedDescription</p>
                         </div>
                     </div>
