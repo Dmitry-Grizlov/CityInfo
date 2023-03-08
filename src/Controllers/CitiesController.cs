@@ -38,9 +38,10 @@ namespace CityInfo.Controllers
             return Json(await _geo.List(input));
         }
 
-        public IActionResult Photos()
+        public async Task<IActionResult> Photos(string city)
         {
-            return View();
+            var result = await _images.GetImages(city, false);
+            return View(result);
         }
 
         [HttpGet]

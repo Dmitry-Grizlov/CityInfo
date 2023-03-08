@@ -32,7 +32,7 @@
                         <li class="menu-item">@Html.ActionLink("Home", "Index", "Cities")</li>
                         <li class="menu-item">@Html.ActionLink("News", "Index", "News", new{ city = ViewData["Title"] })
                         </li>
-                        <li class="menu-item">@Html.ActionLink("Photos", "Photos", "Cities")</li>
+                        <li class="menu-item">@Html.ActionLink("Photos", "Photos", "Cities", new{ city = ViewData["Title"] })</li>
                         <li class="menu-item">@Html.ActionLink("Contact", "Contact", "Cities")</li>
                     </ul>
                 </div>
