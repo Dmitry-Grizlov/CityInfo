@@ -24,8 +24,8 @@ namespace CityInfo.Controllers
             var city = weather.City;
 
             ViewData["Title"] = city;
-            
-            var news = await _news.GetNews(city);
+
+            var news = await _news.List(city);
             var images = await _images.GetImages(city);
             var result = new CityIndexModel { City = city, News = news, Weather = weather, Images = images };
 
@@ -36,11 +36,6 @@ namespace CityInfo.Controllers
         public async Task<IActionResult> CitiesList(string input)
         {
             return Json(await _geo.List(input));
-        }
-
-        public IActionResult News()
-        {
-            return View();
         }
 
         public IActionResult Photos()
