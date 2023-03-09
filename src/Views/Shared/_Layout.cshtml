@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject IOptions<AppConfig> config
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -32,7 +34,8 @@
                         <li class="menu-item">@Html.ActionLink("Home", "Index", "Cities")</li>
                         <li class="menu-item">@Html.ActionLink("News", "Index", "News", new{ city = ViewData["Title"] })
                         </li>
-                        <li class="menu-item">@Html.ActionLink("Photos", "Photos", "Cities", new{ city = ViewData["Title"] })</li>
+                        <li class="menu-item">@Html.ActionLink("Photos", "Photos", "Cities", new{ city =
+                            ViewData["Title"] })</li>
                         <li class="menu-item">@Html.ActionLink("Contact", "Contact", "Cities")</li>
                     </ul>
                 </div>
@@ -49,16 +52,15 @@
                 <div class="row">
                     <div class="col-md-8">
                         <form action="#" class="subscribe-form">
-                            <input type="text" placeholder="Enter your email to subscribe...">
-                            <input type="submit" value="Subscribe">
+                            <input type="text" id="email" placeholder="Enter your email to subscribe...">
+                            <input type="submit" value="Subscribe" id="subscription-button">
                         </form>
                     </div>
                     <div class="col-md-3 col-md-offset-1">
                         <div class="social-links">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-google-plus"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                            <a href="@config.Value.SocialUrls.Facebook"><i class="fa fa-facebook"></i></a>
+                            <a href="@config.Value.SocialUrls.Github"><i class="fa fa-github"></i></a>
+                            <a href="@config.Value.SocialUrls.LinkedIn"><i class="fa fa-linkedin"></i></a>
                         </div>
                     </div>
                 </div>
@@ -69,10 +71,11 @@
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-migrate-1.4.1.min.js"></script>
+    <script src="~/js/jqueryMigration.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/plugins.js" asp-append-version="true"></script>
     <script src="~/js/app.js" asp-append-version="true"></script>
+    <script src="~/js/subscribe.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

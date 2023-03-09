@@ -35,7 +35,19 @@ namespace CityInfo.Controllers
         [HttpPost]
         public async Task<IActionResult> CitiesList(string input)
         {
-            return Json(await _geo.List(input));
+            var result = await _geo.List(input);
+            return Json(new ApiResult<GeoModel>
+            {
+                StatusCode = result.Results.Any() ? 200 : 404,
+                Data = result,
+                Msg = result.Results.Any() ? "Sucess" : "Not Found"
+            });
+        }
+
+        [HttpPost]
+        public IActionResult Subscribe(SubscriptionModel model)
+        {
+            return Json(new ApiResult { StatusCode = 200, Msg = "Success" });
         }
 
         public async Task<IActionResult> Photos(string city)

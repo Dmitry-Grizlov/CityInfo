@@ -7,5 +7,7 @@ namespace CityInfo.Models
         public string NewsKey { get; set; }
 
         public string ImageKey { get; set; }
+
+        public SocialUrlsModel SocialUrls { get; set; }
     }
 }
